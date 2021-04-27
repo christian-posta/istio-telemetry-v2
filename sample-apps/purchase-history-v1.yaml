@@ -33,7 +33,7 @@ spec:
         - name: "TIMING_50_PERCENTILE"
           value: "750ms"   
         - name: "ERROR_RATE"
-          value: "0.33"                              
+          value: "0.50"                              
         - name: "ERROR_CODE"
           value: "500"           
         - name: "SERVER_TYPE"

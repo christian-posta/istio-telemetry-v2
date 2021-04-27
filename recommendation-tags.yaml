@@ -1,24 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-api
+  name: recommendation
   labels:
-    app: web-api
+    app: recommendation
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web-api
+      app: recommendation
   template:
     metadata:
       labels:
-        app: web-api
+        app: recommendation
       annotations:
         sidecar.istio.io/extraStatTags: posta,posta_two
-        sidecar.istio.io/statsInclusionPrefixes: istio_posta_metric
     spec:
       containers:
-      - name: web-api
+      - name: recommendation
         image: nicholasjackson/fake-service:v0.7.8
         ports:
         - containerPort: 8080
@@ -26,8 +25,8 @@ spec:
         - name: "LISTEN_ADDR"
           value: "0.0.0.0:8080"
         - name: "UPSTREAM_URIS"
-          value: "http://recommendation:8080"
+          value: "http://purchase-history:8080"
         - name: "NAME"
-          value: "web-api"
+          value: "recommendation"
         - name: "MESSAGE"
-          value: "Hello From Web API"
+          value: "Hello From Recommendations!"

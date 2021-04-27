@@ -1,15 +1,27 @@
-kind create cluster
+## Deep dive Istio telemetry v2
 
-istioctl install -y
+This is a quick jump into Istio telemetry v2 to accompany [this blog post]().
 
-cd ./sample-apps/
+For more information, see the [Istio documentation](https://istio.io/latest/docs/concepts/observability/). For even more, see Chapter 7 on Observability in my book [Istio in Action](https://www.manning.com/books/istio-in-action).
 
-./setup.sh
+### Set up cluster
 
-cd ../
+```
+$  kind create cluster
+$  istioctl install -y
+$  ./setup.sh
+```
 
-port-forward in a diff window
-kubectl -n istio-system port-forward deploy/istio-ingressgateway 8080
+From here, we can make a call to the Istio ingress gateway:
 
-check metrics:
+```
+$  kubectl -n default exec -it deploy/sleep -- curl -H "Host: istioinaction.io" http://istio-ingressgateway.istio-system/
+```
+
+We should see 1/2 of the calls fail between recommendation and purchase-history services. 
+
+If we scrape the metrics, we can see
+
+```
 kubectl exec -it -n istioinaction deploy/recommendation -c istio-proxy -- curl localhost:15000/stats/prometheus | grep istio_requests_total
+```
